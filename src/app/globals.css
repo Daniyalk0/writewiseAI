@@ -1,0 +1,9 @@
+@import "tailwindcss";
+/* @import "tw-animate-css"; */
+
+input:-webkit-autofill {
+  background-color: transparent !important;
+  -webkit-box-shadow: 0 0 0px 1000px #18181b inset !important; /* your bg color */
+  -webkit-text-fill-color: #b1b1b1 !important; /* your text color */
+  transition: background-color 9999s ease-in-out 0s;
+}
