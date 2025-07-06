@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FaGoogle } from "react-icons/fa";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaGithub } from "react-icons/fa";
 import { loginSchema } from "../../../../lib/validation/Auth-schema";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -16,26 +16,27 @@ import {
   setPersistence,
   signInAnonymously,
   signOut,
-  User,
+  onAuthStateChanged,
 } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import PopUp from "@/components/PopUp";
-import AuthProvider from "../authProviders/AuthProvider";
 import GuestSignin from "../authProviders/GuestSignin";
 import z from "zod";
+import { useAuth } from "@/components/AuthProvider";
+import ThirdPartyAuth from "../authProviders/ThirdPartyAuth";
 
 type Inputs = z.infer<typeof loginSchema>;
 
 const Page = () => {
   const [message, setMessage] = useState<string>("");
   const [rememberMe, setRememberMe] = useState<boolean>(false);
-  const [anonymousLoading, setAnonymousLoading] = useState(false);
   const [isAuthProvider, setIsAuthProvider] = useState(false);
-  const [currentUser] = useState<User | null>(null);
+
   const router = useRouter();
+   const { anonymousLoading, currentUser, setCurrentUser } = useAuth();
 
   const {
     register,
@@ -44,7 +45,7 @@ const Page = () => {
     formState: { errors, isSubmitting },
   } = useForm<Inputs>({ resolver: zodResolver(loginSchema) });
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const login: SubmitHandler<Inputs> = async (data) => {
     const { email, password } = data;
 
     try {
@@ -89,6 +90,13 @@ const Page = () => {
     }
   };
 
+   useEffect(() => {
+      const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+        setCurrentUser(firebaseUser);
+      });
+      return () => unsubscribe();
+    }, []);
+
   return (
     <div className="min-h-screen flex items-center justify-center px-4 bg-zinc-800 flex-col gap-7">
       <div className="w-full max-w-md  rounded-lg shadow-lg p-8 bg-zinc-900">
@@ -96,7 +104,7 @@ const Page = () => {
           Sign In
         </h2>
 
-        <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
+        <form className="space-y-5" onSubmit={handleSubmit(login)}>
           <div>
             <Label
               htmlFor="email"
@@ -105,7 +113,7 @@ const Page = () => {
               Email
             </Label>
             <Input
-              disabled={isSubmitting}
+               disabled={isSubmitting || isAuthProvider || anonymousLoading || !!currentUser}
               id="email"
               type="email"
               autoComplete="email"
@@ -132,7 +140,7 @@ const Page = () => {
               Password
             </Label>
             <Input
-              disabled={isSubmitting}
+               disabled={isSubmitting || isAuthProvider || anonymousLoading || !!currentUser}
               {...register("password")}
               id="password"
               type="password"
@@ -159,12 +167,14 @@ const Page = () => {
                 checked={rememberMe}
                 onCheckedChange={(checked) => setRememberMe(!!checked)}
                 className={`h-4 w-4 cursor-pointer text-zinc-800  border-gray-300 data-[state=checked]:bg-zinc-200 data-[state=checked]:text-black  disabled:opacity-50  ${
-                  isSubmitting ? "pointer-events-none" : ""
+                  isSubmitting || isAuthProvider || anonymousLoading || currentUser ? "pointer-events-none" : ""
                 }`}
               />
               <label
                 htmlFor="remember"
-                className="ml-2 block text-sm text-[#b1b1b1]"
+                className={`ml-2 block text-sm text-[#b1b1b1]  ${
+                  isSubmitting || isAuthProvider || anonymousLoading || currentUser ? "pointer-events-none" : ""
+                }`}
               >
                 Remember me
               </label>
@@ -178,7 +188,7 @@ const Page = () => {
                   }
                 }}
                 className={`${
-                  isSubmitting
+                  isSubmitting || isAuthProvider || anonymousLoading || currentUser
                     ? "text-zinc-500 pointer-events-none"
                     : "text-indigo-600 "
                 } hover:underline`}
@@ -191,8 +201,8 @@ const Page = () => {
             disabled={isSubmitting}
             type="submit"
             className={`w-full py-2 px-4 cursor-pointer  text-white font-semibold rounded-md shadow hover:bg-indigo-700 transition duration-200  disabled:opacity-50 disabled:cursor-not-allowed  ${
-              isSubmitting
-                ? "pointer-events-none bg-indigo-800"
+              isSubmitting || isAuthProvider || anonymousLoading || currentUser
+                ? "pointer-events-none bg-indigo-900 text-zinc-400" 
                 : "bg-indigo-600"
             }`}
           >
@@ -200,21 +210,23 @@ const Page = () => {
           </button>
         </form>
         <div className="flex items-center justify-between gap-5 my-5">
-          <AuthProvider<Inputs>
+          <ThirdPartyAuth<Inputs>
             Icon={FaGoogle}
             setIsAuthProvider={setIsAuthProvider}
             reset={reset}
             isSubmitting={isSubmitting}
             isAuthProvider={isAuthProvider}
             social={"google"}
+            anonymousLoading={anonymousLoading}
           />
-          <AuthProvider<Inputs>
+          <ThirdPartyAuth<Inputs>
             Icon={FaGithub}
             setIsAuthProvider={setIsAuthProvider}
             reset={reset}
             isSubmitting={isSubmitting}
             isAuthProvider={isAuthProvider}
             social={"github"}
+            anonymousLoading={anonymousLoading}
           />
         </div>
         <p className="mt-6 text-center text-sm text-[#b1b1b1]">
@@ -222,7 +234,7 @@ const Page = () => {
           <Link
             href="/auth/signup"
             className={`text-indigo-600 font-medium hover:underline ${
-              isSubmitting ? "pointer-events-none" : ""
+              isSubmitting || isAuthProvider || anonymousLoading  || currentUser ? "pointer-events-none" : ""
             }`}
           >
             Sign Up
@@ -238,13 +250,11 @@ const Page = () => {
         )}
       </div>
       <GuestSignin
-        setAnonymousLoading={setAnonymousLoading}
         currentUser={currentUser}
         signOut={signOut}
         auth={auth}
         signInAnonymously={signInAnonymously}
         isSubmitting={isSubmitting}
-        anonymousLoading={anonymousLoading}
         isAuthProvider={isAuthProvider}
       />
     </div>

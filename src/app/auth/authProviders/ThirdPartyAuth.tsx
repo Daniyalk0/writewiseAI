@@ -9,29 +9,34 @@ import {
 import { auth } from "../../../../lib/firebase";
 import { useRouter } from "next/navigation";
 import { FieldValues, UseFormReset } from "react-hook-form";
+import { useAuth } from "@/components/AuthProvider";
 
 
-interface AuthProviderProps<T extends FieldValues> {
+interface ThirdPartyAuth<T extends FieldValues> {
   setIsAuthProvider: (value: boolean) => void;
   reset: UseFormReset<T>;
   isSubmitting: boolean;
+  anonymousLoading: boolean;
   isAuthProvider: boolean;
   Icon: React.ElementType;
   social: "google" | "github";
 }
 
-const AuthProvider = <T extends FieldValues> ({ 
+const ThirdPartyAuth = <T extends FieldValues> ({ 
   setIsAuthProvider,
   reset,
   isSubmitting,
   isAuthProvider,
   Icon,
   social,
-}: AuthProviderProps<T>) => {
+  anonymousLoading
+}: ThirdPartyAuth<T>) => {
   const router = useRouter();
+  const {currentUser} = useAuth()
   const handleSocialSignIn = async (providerName: "google" | "github") => {
     reset(); // clear form if needed
     setIsAuthProvider(true);
+
 
     let provider;
 
@@ -67,7 +72,7 @@ const AuthProvider = <T extends FieldValues> ({
     <div
       onClick={() => handleSocialSignIn(social)}
       className={`hover:border-indigo-900 border-transparent border-[1px]  py-2 px-2 bg-zinc-800 text-[#b1b1b1] font-semibold rounded-md shadow  transition duration-200 flex items-center gap-2   ${
-        isSubmitting || isAuthProvider
+        isSubmitting || isAuthProvider || anonymousLoading || currentUser
           ? "pointer-events-none bg-zinc-700 text-zinc-500"
           : "cursor-pointer"
       }`}
@@ -78,4 +83,4 @@ const AuthProvider = <T extends FieldValues> ({
   );
 };
 
-export default AuthProvider;
+export default ThirdPartyAuth;

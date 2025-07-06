@@ -10,7 +10,6 @@ import {
   signInAnonymously,
   onAuthStateChanged,
   signOut,
-  User,
 } from "firebase/auth";
 import { signupSchema } from "../../../../lib/validation/Auth-schema";
 import { auth } from "../../../../lib/firebase";
@@ -20,18 +19,18 @@ import { FaGoogle } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
 import PopUp from "@/components/PopUp";
 import Link from "next/link";
-import AuthProvider from "../authProviders/AuthProvider";
 import GuestSignin from "../authProviders/GuestSignin";
 import z from "zod";
+import { useAuth } from "@/components/AuthProvider";
+import ThirdPartyAuth from "../authProviders/ThirdPartyAuth";
 
 type Inputs = z.infer<typeof signupSchema>;
 
 export default function SignupPage() {
   const [message, setMessage] = useState("");
   const [emailSent, setEmailSent] = useState(false);
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [anonymousLoading, setAnonymousLoading] = useState(false);
   const [isAuthProvider, setIsAuthProvider] = useState(false);
+  const {currentUser, setCurrentUser, anonymousLoading } = useAuth()
 
   const {
     register,
@@ -87,7 +86,9 @@ export default function SignupPage() {
     <div className="flex w-full items-center justify-center flex-col bg-zinc-800 gap-4 min-h-screen sm:flex-row px-4">
       <div className=" w-full sm:w-[40%] flex items-center justify-center ">
         <div className="w-full max-w-md rounded-lg shadow-lg px-5 sm:px-8 py-6 bg-zinc-900">
-          <h2 className="text-2xl font-bold mb-4 sm:mb-6 text-center text-[#b1b1b1]">
+          <h2
+            className={`text-2xl font-bold mb-4 sm:mb-6 text-center text-[#b1b1b1] `}
+          >
             Sign Up
           </h2>
 
@@ -102,7 +103,7 @@ export default function SignupPage() {
                     Name
                   </Label>
                   <Input
-                    disabled={isSubmitting || isAuthProvider}
+                    disabled={isSubmitting || isAuthProvider || anonymousLoading || !!currentUser}
                     id="name"
                     type="text"
                     autoComplete="name"
@@ -129,7 +130,7 @@ export default function SignupPage() {
                     Email
                   </Label>
                   <Input
-                    disabled={isSubmitting || isAuthProvider}
+                   disabled={isSubmitting || isAuthProvider || anonymousLoading || !!currentUser}
                     id="email"
                     type="email"
                     autoComplete="email"
@@ -157,7 +158,7 @@ export default function SignupPage() {
                     Password
                   </Label>
                   <Input
-                    disabled={isSubmitting || isAuthProvider}
+                  disabled={isSubmitting || isAuthProvider || anonymousLoading || !!currentUser}
                     {...register("password")}
                     id="password"
                     type="password"
@@ -183,7 +184,7 @@ export default function SignupPage() {
                     Confirm Password
                   </Label>
                   <Input
-                    disabled={isSubmitting || isAuthProvider}
+                 disabled={isSubmitting || isAuthProvider || anonymousLoading || !!currentUser}
                     {...register("confirmPassword")}
                     id="confirmPassword"
                     type="password"
@@ -203,11 +204,11 @@ export default function SignupPage() {
                 </div>
 
                 <button
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || isAuthProvider || anonymousLoading || !!currentUser}
                   type="submit"
                   className={`w-full py-2 px-4 cursor-pointer  text-white font-semibold rounded-md shadow hover:bg-indigo-700 transition duration-200  disabled:opacity-50 disabled:cursor-not-allowed  ${
-                    isSubmitting || isAuthProvider
-                      ? "pointer-events-none bg-indigo-800"
+                    isSubmitting || isAuthProvider || anonymousLoading || currentUser
+                      ? "pointer-events-none bg-indigo-900 text-zinc-400"
                       : "bg-indigo-600"
                   }`}
                 >
@@ -215,21 +216,23 @@ export default function SignupPage() {
                 </button>
               </form>
               <div className="flex items-center justify-between gap-5 my-5">
-                <AuthProvider<Inputs>
+                <ThirdPartyAuth<Inputs>
                   Icon={FaGoogle}
                   setIsAuthProvider={setIsAuthProvider}
                   reset={reset}
                   isSubmitting={isSubmitting}
                   isAuthProvider={isAuthProvider}
                   social={"google"}
+                  anonymousLoading={anonymousLoading}
                 />
-                <AuthProvider
+                <ThirdPartyAuth<Inputs>
                   Icon={FaGithub}
                   setIsAuthProvider={setIsAuthProvider}
                   reset={reset}
                   isSubmitting={isSubmitting}
                   isAuthProvider={isAuthProvider}
                   social={"github"}
+                  anonymousLoading={anonymousLoading}
                 />
               </div>
               <p className="mt-6 text-center text-sm text-[#b1b1b1]">
@@ -237,7 +240,7 @@ export default function SignupPage() {
                 <Link
                   href="/auth/login"
                   className={`text-indigo-600 font-medium hover:underline ${
-                    isSubmitting || isAuthProvider ? "pointer-events-none" : ""
+                    isSubmitting || isAuthProvider || anonymousLoading || currentUser ? "pointer-events-none" : ""
                   }`}
                 >
                   Sign in
@@ -253,16 +256,27 @@ export default function SignupPage() {
               )}
             </div>
           )}
+
+          {emailSent && (
+            <div className="flex items-center justify-center flex-col gap-2 ">
+              <h1 className="text-[#b1b1b1] font-semibold text-center">
+                Email Sent!
+              </h1>
+              <h1 className="text-[#b1b1b1] font-light text-center">
+                Please Verify your Email by the clicking on the Link sent to
+                your email
+              </h1>
+            </div>
+          )}
+
         </div>
       </div>
       <GuestSignin
-        setAnonymousLoading={setAnonymousLoading}
         currentUser={currentUser}
         signOut={signOut}
         auth={auth}
         signInAnonymously={signInAnonymously}
         isSubmitting={isSubmitting}
-        anonymousLoading={anonymousLoading}
         isAuthProvider={isAuthProvider}
       />
     </div>
