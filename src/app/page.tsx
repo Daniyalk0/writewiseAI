@@ -1,19 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { auth } from "../lib/firebase";
-import { useRouter } from "next/navigation";
-import ThemeToggle from "@/components/ThemeToggle";
-import Header from "@/components/Header";
 import Link from "next/link";
 import BlurText from "@/components/ui/BlurText";
 import { motion } from "framer-motion";
 import { useIsMobile } from "@/lib/useIsMobile";
-import { ArrowRight } from "lucide-react";
 import { useAuth } from "@/lib/useAuth";
 
 const Page = () => {
-  // useAuthGuard();
-  const router = useRouter();
+
   const isMobile = useIsMobile();
   const [hasMounted, setHasMounted] = useState(false);
   const user = useAuth();
@@ -57,12 +51,6 @@ const Page = () => {
         animate={{ opacity: 1 }}
         transition={{ delay: 4, duration: 0.5, ease: "easeInOut" }}
         className="text-lg md:text-xl text-center text-orange-600 dark:text-[#ff9c75e2] max-w-2xl mx-auto mt-8"
-        // style={{
-        //   background:
-        //     "linear-gradient(90deg,rgba(3, 0, 189, 1) 1%, rgba(0, 115, 255, 1) 51%)", // ✅ dynamically set gradient
-        //   WebkitBackgroundClip: "text", // ✅ clips the gradient to text
-        //   WebkitTextFillColor: "transparent", // ✅ hides actual text color}}
-        // }}
       >
         <>
           Supercharge your productivity with AI-powered content tailored for

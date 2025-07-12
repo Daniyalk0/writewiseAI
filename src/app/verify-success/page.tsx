@@ -5,9 +5,9 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { auth } from "../../lib/firebase";
 
-export default function page() {
+export default function Page() {
   useEffect(() => {
-  signOut(auth); // force logout of old cached session
+  signOut(auth); 
 }, []);
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">

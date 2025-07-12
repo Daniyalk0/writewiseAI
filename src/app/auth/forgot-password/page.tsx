@@ -19,10 +19,15 @@ export default function ForgotPasswordPage() {
       await sendPasswordResetEmail(auth, email);
       setMessage("✅ Password reset email sent! Check your inbox.");
       setShowMessage(true);
-    } catch (error: any) {
-      setMessage("❌ Error: " + error.message);
-      setShowMessage(true);
-    }
+   } catch (error: unknown) {
+  if (error instanceof Error) {
+    setMessage("❌ Error: " + error.message);
+  } else {
+    setMessage("❌ Unknown error occurred");
+  }
+  setShowMessage(true);
+}
+
   };
 
   useEffect(() => {
