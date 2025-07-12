@@ -11,7 +11,8 @@ import rehypeRaw from "rehype-raw";
 import { User } from "firebase/auth";
 
 export default function History() {
-  const [copiedIndex, setCopiedIndex] = useState(null);
+ const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+
   const currentUser: User | null | undefined = useAuth();
 
   const { history, loading } = useHistory(currentUser);

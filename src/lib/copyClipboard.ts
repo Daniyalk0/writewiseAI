@@ -1,6 +1,6 @@
 export const handleCopy = async (
   output: string,
-  setCopiedIndex: (index: number | null) => void,
+   setCopiedIndex: (index: number | null) => void,
   index: number
 ): Promise<void> => {
   if (!output) return;

@@ -28,7 +28,7 @@ export default function GeneratePage() {
   const [context, setContext] = useState("");
   const [output, setOutput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [copied, setCopied] = useState(null);
+  const [copied, setCopied] = useState<number | null>(null);
   const [error, setError] = useState("");
   const [userGeneratedContext, setUserGeneratedContext] = useState("");
 
