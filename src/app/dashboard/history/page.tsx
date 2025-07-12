@@ -51,7 +51,7 @@ export default function History() {
   }
 
   return (
-    <div className="space-y-4 w-[100vw] ml-[4.2em] pr-2  md:w-[70vw] rounded-xl  md:ml-0 md:mr-0  md:px-3 py-6 mt-2 lg:mt-14 relative">
+    <div className="space-y-4 w-[100vw] ml-[4.2em] pr-2  md:w-[70vw] rounded-xl  md:ml-0 md:mr-0  md:px-3 py-6 mt-2 lg:mt-14 relative ">
       <button
         className=" bg-[#ff3535c3] dark:bg-[#4a1616]  text-red-800 dark:text-red-400 px-3 py-1 right-2 z-30 rounded-md fixed top-[4.5rem] md:top-16  md:right-8 hover:bg-[#ff3535b0]  hover:dark:bg-[#5d2020eb] lg:top-20  "
         onClick={handleClearAll}

@@ -39,12 +39,22 @@ export default function GeneratePage() {
     handleCopy(output, setCopied, 1);
   };
 
-  useEffect(() => {
+
+
+const didMount = useRef(false);
+
+useEffect(() => {
+  if (didMount.current) {
+    // Only scroll when loading changes AFTER first render
     window.scrollTo({
       top: document.body.scrollHeight,
       behavior: "smooth",
     });
-  }, [loading]);
+  } else {
+    didMount.current = true;
+  }
+}, [loading]);
+
 
   const handleGenerate = async () => {
     if (!context.trim() || !currentUser?.uid) {
@@ -96,7 +106,9 @@ export default function GeneratePage() {
             disabled={loading}
             value={type}
             onChange={(e) => setType(e.target.value)}
-            className={`w-full border border-zinc-300 dark:border-gray-800  focus:outline-none focus:border-orange-400  focus:dark:border-orange-900 dark:bg-[#282828a7] bg-[#ececec] rounded-md p-2 placeholder:text-zinc-500 ${loading && "text-zinc-400 dark:text-zinc-700"}`}
+            className={`w-full border border-zinc-300 dark:border-gray-800  focus:outline-none focus:border-orange-400  focus:dark:border-orange-900 dark:bg-[#282828a7] bg-[#ececec] rounded-md p-2 placeholder:text-zinc-500 ${
+              loading && "text-zinc-400 dark:text-zinc-700"
+            }`}
           >
             {contentTypes.map((ct) => (
               <option key={ct} value={ct}>
@@ -115,7 +127,11 @@ export default function GeneratePage() {
             rows={5}
             value={context}
             onChange={(e) => setContext(e.target.value)}
-            className={`w-full border border-zinc-300 dark:border-gray-800  focus:outline-none focus:border-orange-400 focus:dark:border-orange-900 dark:bg-[#282828a7] bg-[#ececec]  rounded-md p-2 placeholder:text-zinc-500 ${loading ? "placeholder:text-zinc-300 placeholder:dark:text-zinc-700 dark:bg-[#1F1F20]": ""}`}
+            className={`w-full border border-zinc-300 dark:border-gray-800  focus:outline-none focus:border-orange-400 focus:dark:border-orange-900 dark:bg-[#282828a7] bg-[#ececec]  rounded-md p-2 placeholder:text-zinc-500 ${
+              loading
+                ? "placeholder:text-zinc-300 placeholder:dark:text-zinc-700 dark:bg-[#1F1F20]"
+                : ""
+            }`}
             placeholder="e.g., Write a follow-up email after a job interview..."
           />
         </div>
@@ -123,7 +139,11 @@ export default function GeneratePage() {
         <button
           onClick={handleGenerate}
           disabled={loading}
-          className={`w-full md:w-24 px-4 py-2 rounded-md flex items-center justify-center transition-colors duration-200 border-y-2 border-transparent active:border-red-500 ${loading ? "pointer-events-none text-zinc-400 dark:text-zinc-700 bg-zinc-300 dark:bg-zinc-800": "text-red-600 bg-zinc-300 dark:bg-zinc-800"  }`}
+          className={`w-full md:w-24 px-4 py-2 rounded-md flex items-center justify-center transition-colors duration-200 border-y-2 border-transparent active:border-red-500 ${
+            loading
+              ? "pointer-events-none text-zinc-400 dark:text-zinc-700 bg-zinc-300 dark:bg-zinc-800"
+              : "text-red-600 bg-zinc-300 dark:bg-zinc-800"
+          }`}
         >
           Generate
         </button>
@@ -143,8 +163,10 @@ export default function GeneratePage() {
           </div>
           {/* User Icon */}
           <div className="shrink-0 w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center text-xs font-bold overflow-hidden">
-           <img src={currentUser?.photoURL || "/default-avatar.png"} alt="Profile" />
-
+            <img
+              src={currentUser?.photoURL || "/default-avatar.png"}
+              alt="Profile"
+            />
           </div>
         </div>
       )}
@@ -159,7 +181,6 @@ export default function GeneratePage() {
 
           {/* AI Message Bubble */}
           <div className="max-w-[100%] md:max-w-[80%] bg-gray-200 dark:bg-[#222222] text-gray-900 dark:text-gray-200 p-4 rounded-xl rounded-bl-none shadow-md text-sm relative space-y-2">
-            
             <div className="flex justify-between items-center">
               <h3 className="text-sm  text-zinc-400 dark:text-zinc-600">
                 {loading ? `Generating ${type}...` : `Generated ${type}`}

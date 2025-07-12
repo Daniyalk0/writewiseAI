@@ -1,7 +1,6 @@
 "use client";
 import React, {useState } from "react";
 import ThemeToggle from "./ThemeToggle";
-// import { ModeToggle } from "./ui/modeToggle";
 import { motion } from "framer-motion";
 import GradientText from "./ui/GradientText";
 import { usePathname, useRouter } from "next/navigation";
@@ -27,7 +26,6 @@ const Header = () => {
       router.push("/auth/login");
     } catch (error) {
       console.error("❌ Login/Logout failed:", error);
-      // Optional: show toast or set error state
     } finally {
       setLoading(false);
     }
@@ -43,8 +41,8 @@ const Header = () => {
         duration: 0.5,
         ease: "easeInOut",
       }}
-      className={`h-16  top-0  dark:shadow-[#30303079] px-4 md:px-8 flex items-center justify-between fixed w-full left-0 z-50
-    shadow-sm md:shadow-md bg-[#ffffff] dark:bg-[#000000] ${
+      className={`h-16  z-[1000] top-0  dark:shadow-[#30303079] px-4 md:px-14 flex items-center justify-between fixed w-full left-0 
+    shadow-sm md:shadow-md bg-[#ffffff] dark:bg-[#000000]  ${
       isHome ? "opacity-0" : ""
     }`}
     >

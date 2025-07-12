@@ -46,7 +46,7 @@ export default function Sidebar({
     <aside
       className={`${
         isOpen ? "w-full md:w-56" : "w-14 "
-      }  h-[92vh] p-3 transition-width duration-300 fixed dark:bg-[#000000] z-[999] shadow-sm md:shadow-md shadow-zinc-300 md:shadow-zinc-500 bg-[#ffffffec] dark:shadow-[#303030] md:dark:shadow-[#4f4f4f]`}
+      }  h-[92vh] p-3 transition-width duration-300 fixed dark:bg-[#000000] z-[999] shadow-sm md:shadow-md shadow-zinc-300 md:shadow-zinc-500 bg-[#ffffff] dark:shadow-[#303030] md:dark:shadow-[#4f4f4f]`}
     >
       <div
         onClick={() => setIsOpen(!isOpen)}

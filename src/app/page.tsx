@@ -22,6 +22,8 @@ const Page = () => {
   const initialScale = isMobile ? 1.2 : 2.2; // More visible difference
 
   return (
+
+
     <div className="p-6 min-h-screen relative overflow-hidden  flex items-center justify-center flex-col ">
       <motion.div
         initial={{ scale: initialScale }}
@@ -77,7 +79,9 @@ const Page = () => {
           </button>
         </Link>
       </motion.div>
+      
     </div>
+        
   );
 };
 
