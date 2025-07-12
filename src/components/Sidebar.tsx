@@ -84,6 +84,7 @@ export default function Sidebar({
           <Link
             onMouseEnter={() => setHoveredIndex(index)}
             onMouseLeave={() => setHoveredIndex(null)}
+            onClick={() => setIsOpen(false)}
             key={href}
             href={href}
             className={`relative border-b-2 transition-all duration-200  flex items-center p-2 rounded-md
