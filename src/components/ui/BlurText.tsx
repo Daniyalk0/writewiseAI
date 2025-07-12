@@ -32,6 +32,7 @@ const buildKeyframes = (
   return keyframes;
 };
 
+
 const BlurText: React.FC<BlurTextProps> = ({
   text = "",
   delay = 200,
@@ -108,7 +109,9 @@ const BlurText: React.FC<BlurTextProps> = ({
           times,
           delay: (index * delay) / 1000,
         };
-        (spanTransition as any).ease = easing;
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-ignore: third-party bug
+        spanTransition.ease = easing;
 
         return (
           <motion.span
@@ -121,7 +124,8 @@ const BlurText: React.FC<BlurTextProps> = ({
             }
             style={{
               display: "inline-block", // ✅ must be inline-block
-              background: "linear-gradient(90deg,rgba(189, 123, 0, 0.2) 1%, rgba(255, 85, 0, 1) 46%)", // ✅ dynamically set gradient
+              background:
+                "linear-gradient(90deg,rgba(189, 123, 0, 0.2) 1%, rgba(255, 85, 0, 1) 46%)", // ✅ dynamically set gradient
               WebkitBackgroundClip: "text", // ✅ clips the gradient to text
               WebkitTextFillColor: "transparent", // ✅ hides actual text color
             }}
