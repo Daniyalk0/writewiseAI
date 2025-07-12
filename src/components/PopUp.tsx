@@ -1,26 +1,37 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 
 const PopUp = ({
-  title = 'hello',
-  message = 'anjii sijr ofds ',
+  title = "hello",
+  message = "anjii sijr ofds ",
   onClose,
 }: {
   title: string;
   message: string;
   onClose: () => void;
 }) => {
+  // 🚫 Disable scroll on mount, re-enable on unmount
+  useEffect(() => {
+    document.body.classList.add("overflow-hidden");
+
+    return () => {
+      document.body.classList.remove("overflow-hidden");
+    };
+  }, []);
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-      <div className="relative bg-zinc-800 text-white p-6 pt-16 rounded-xl shadow-lg max-w-md w-full text-center">
+    <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/60 backdrop-blur-sm">
+      <div className="relative bg-zinc-300 dark:bg-[#1e1e1e] text-white p-6 pt-16 rounded-xl shadow-lg w-[80%] max-w-md sm:w-full text-center">
         {/* ❌ Big Red Cross Icon */}
-        <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-zinc-800 rounded-full p-1">
+        <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-zinc-300 dark:bg-[#1e1e1e] rounded-full p-1">
           <AiOutlineCloseCircle className="text-red-600" size={64} />
         </div>
 
-        <h2 className="text-xl font-semibold mb-2">{title}</h2>
-        <p className="text-sm text-zinc-300 mb-6">{message}</p>
+        <h2 className="text-xl font-semibold mb-2 text-zinc-800 dark:text-zinc-300">
+          {title}
+        </h2>
+        <p className="text-sm text-zinc-700 dark:text-zinc-400 mb-6">{message}</p>
 
         <button
           onClick={onClose}

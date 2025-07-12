@@ -1,3 +1,6 @@
+// app/dashboard/page.tsx
+import { redirect } from 'next/navigation';
+
 export default function DashboardPage() {
-  return <div className="text-xl font-bold">Welcome to your Dashboard</div>;
+  redirect('/dashboard/generate');
 }

@@ -1,35 +1,40 @@
 "use client";
-
-import { User } from "firebase/auth";
 import { createContext, useContext, useState } from "react";
 
 interface AuthContextType {
+  needsEmailVerification: boolean;
+  isThirdPartyAuthLoading: boolean;
   anonymousLoading: boolean;
   setAnonymousLoading: (value: boolean) => void;
-  currentUser: User | null;
-  setCurrentUser: (user: User | null) => void;
+  setThirdPartyAuthLoading: (value: boolean) => void;
+  setNeedsEmailVerification: (value: boolean) => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
   anonymousLoading: false,
+  isThirdPartyAuthLoading: false,
+  needsEmailVerification: false,
   setAnonymousLoading: () => {},
-  currentUser: null,
-  setCurrentUser: () => {},
+  setThirdPartyAuthLoading: () => {},
+  setNeedsEmailVerification: () => {},
 });
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuthContext = () => useContext(AuthContext);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [anonymousLoading, setAnonymousLoading] = useState(false);
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [anonymousLoading, setAnonymousLoading] = useState(false);;
+   const [needsEmailVerification, setNeedsEmailVerification] = useState(false);
+    const [isThirdPartyAuthLoading, setThirdPartyAuthLoading] = useState(false);
 
   return (
     <AuthContext.Provider
       value={{
         anonymousLoading,
         setAnonymousLoading,
-        currentUser,
-        setCurrentUser,
+        needsEmailVerification,
+        setNeedsEmailVerification,
+        isThirdPartyAuthLoading,
+        setThirdPartyAuthLoading
       }}
     >
       {children}

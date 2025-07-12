@@ -1,39 +1,42 @@
 "use client";
-import { useAuth } from "@/components/AuthProvider";
-import { Auth, User, UserCredential } from "firebase/auth";
+import { useAuthContext } from "@/components/AuthProvider";
+import { deleteUserHistory } from "@/lib/fireStoreHelpers";
+import { Auth, deleteUser, User, UserCredential } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { FaUser } from "react-icons/fa";
 
 interface Props {
-  currentUser: User | null;
+  currentUser: User | null | undefined;
   isSubmitting: boolean;
-  isAuthProvider: boolean;
+  isThirdPartyAuthLoading: boolean;
   signOut: (auth: Auth) => Promise<void>;
   signInAnonymously: (auth: Auth) => Promise<UserCredential>;
   auth:Auth;
+  className?: string;
+
 }
 
 const GuestSignin = ({
   currentUser,
-  signOut,
   auth,
   signInAnonymously,
   isSubmitting,
-  isAuthProvider,
+    isThirdPartyAuthLoading,
+  className,
 }: Props) => {
     const router = useRouter()
-    const { anonymousLoading, setAnonymousLoading } = useAuth();
+    const { anonymousLoading, setAnonymousLoading, needsEmailVerification } = useAuthContext();
 
-console.log(currentUser);
 
   const handleGuestAuth = async () => {
     setAnonymousLoading(true);
     try {
       if (currentUser?.isAnonymous) {
-        await signOut(auth);
+        await deleteUserHistory(currentUser.uid);
+              await deleteUser(currentUser);
       } else {
         await signInAnonymously(auth);
-        router.push("/");
+         router.push("/dashboard/generate");
       }
     } catch (error) {
       console.error("Guest auth error:", error);
@@ -54,9 +57,10 @@ console.log(currentUser);
   return (
     <div
       onClick={handleGuestAuth}
-      className={`bg-zinc-900 flex items-center justify-center  hover:border-indigo-900 border-transparent border-[1px] w-full sm:w-[20%]  py-2   text-[#b1b1b1] font-semibold rounded-md  shadow  transition duration-200 gap-2    ${
-        isSubmitting || anonymousLoading || isAuthProvider 
-          ? "pointer-events-none bg-zinc-700 text-zinc-500"
+      className={`dark:shadow-yellow-900 shadow-md md:shadow-lg dark:shadow-sm  shadow-[#83ffec96] dark:bg-[#060606] bg-zinc-200 ${className} flex items-center justify-center hover:dark:border-orange-900 hover:border-orange-300   border-transparent border-[1px] w-full sm:w-[20%]  py-2 dark:text-[#b1b1b1]   text-[#737373] font-semibold rounded-md  shadow  transition-[border-color] duration-200
+       gap-2    ${
+        isSubmitting || anonymousLoading || isThirdPartyAuthLoading || needsEmailVerification || !!currentUser
+          ? "pointer-events-none bg-zinc-300 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-700"
           : "cursor-pointer"
       }`}
     >

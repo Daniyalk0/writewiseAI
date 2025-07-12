@@ -3,7 +3,7 @@
 import { signOut } from "firebase/auth";
 import Link from "next/link";
 import { useEffect } from "react";
-import { auth } from "../../../lib/firebase";
+import { auth } from "../../lib/firebase";
 
 export default function page() {
   useEffect(() => {
