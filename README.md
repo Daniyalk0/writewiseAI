@@ -14,7 +14,7 @@
 
   </div>
 
-<h3 align="center">WriteWise AI</h3>
+<h1 align="center">WriteWise AI</h3>
 </div>
 
 ## 🚀 Live
@@ -29,6 +29,7 @@ WriteWise AI is an AI-powered writing assistant designed to help professionals c
 
 - ✔️ Next.js 15
 - ✔️ TailwindCSS
+- ✔️ Firebase
 - ✔️ TypeScript
 - ✔️ Framer Motion
 
