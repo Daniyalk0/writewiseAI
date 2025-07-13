@@ -11,7 +11,8 @@
   <img src="https://img.shields.io/badge/-Tailwind_CSS-black?style=for-the-badge&logoColor=white&logo=tailwindcss&color=06B6D4" alt="tailwindcss" />
   <img src="https://img.shields.io/badge/-Framer%20Motion-black?style=for-the-badge&logo=framer&logoColor=white&color=0055FF" alt="Framer Motion" />
   <img src="https://img.shields.io/badge/-Firebase-black?style=for-the-badge&logo=firebase&logoColor=white&color=FFCA28" alt="Firebase" />
-  <img src="https://img.shields.io/badge/-OpenRouter_API-black?style=for-the-badge&logoColor=white&labelColor=000000&color=412991&logoWidth=20&logo=https://meta-q.cdn.bubble.io/f1714508691608x403426812698008700/openrouter_logojpg.jpg" alt="OpenRouter API" />
+<img src="https://img.shields.io/badge/-OpenRouter_API-black?style=for-the-badge&logo=web&logoColor=white&color=412991" alt="OpenRouter API" />
+
 </div>
 
 
