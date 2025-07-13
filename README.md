@@ -5,14 +5,15 @@
     </a>
   <br />
 
-  <div>
-    <img src="https://img.shields.io/badge/-Typescript-black?style=for-the-badge&logoColor=white&logo=react&color=3178C6" alt="typescript" />
-    <img src="https://img.shields.io/badge/-Next_JS-black?style=for-the-badge&logoColor=white&logo=nextdotjs&color=000000" alt="nextdotjs" />
-    <img src="https://img.shields.io/badge/-Tailwind_CSS-black?style=for-the-badge&logoColor=white&logo=tailwindcss&color=06B6D4" alt="tailwindcss" />
+<div>
+  <img src="https://img.shields.io/badge/-Typescript-black?style=for-the-badge&logoColor=white&logo=react&color=3178C6" alt="typescript" />
+  <img src="https://img.shields.io/badge/-Next_JS-black?style=for-the-badge&logoColor=white&logo=nextdotjs&color=000000" alt="nextdotjs" />
+  <img src="https://img.shields.io/badge/-Tailwind_CSS-black?style=for-the-badge&logoColor=white&logo=tailwindcss&color=06B6D4" alt="tailwindcss" />
   <img src="https://img.shields.io/badge/-Framer%20Motion-black?style=for-the-badge&logo=framer&logoColor=white&color=0055FF" alt="Framer Motion" />
   <img src="https://img.shields.io/badge/-Firebase-black?style=for-the-badge&logo=firebase&logoColor=white&color=FFCA28" alt="Firebase" />
+  <img src="https://img.shields.io/badge/-OpenRouter_API-black?style=for-the-badge&logoColor=white&labelColor=000000&color=412991&logoWidth=20&logo=https://meta-q.cdn.bubble.io/f1714508691608x403426812698008700/openrouter_logojpg.jpg" alt="OpenRouter API" />
+</div>
 
-  </div>
 
 <h1 align="center">WriteWise AI</h3>
 </div>
@@ -31,11 +32,12 @@ WriteWise AI is an AI-powered writing assistant designed to help professionals c
 - ✔️ TailwindCSS
 - ✔️ Firebase
 - ✔️ TypeScript
+- ✔️ OpenAI API
 - ✔️ Framer Motion
 
 ## ✨ Features
 
-- **AI-Powered Text Generation (LLaMA)**: Generate high-quality, professional content powered by Meta’s open-source LLaMA model, known for its balance of speed and language understanding.
+- **AI-Powered Text Generation (LLaMA via OpenRouter API)****: Generate high-quality, professional content using Meta’s LLaMA model accessed through the OpenRouter API — combining open-source language modeling with seamless API integration and flexibility.
 - **Real-Time Streaming Output**: Watch your content appear word by word, enhancing interactivity.
 - **One-Click Copy**: Quickly copy the generated content for use anywhere.
 - **Auto-Save & Manage History**: Every generation is automatically saved to your personal history. Easily delete specific entries or clear your entire history with a single click.
