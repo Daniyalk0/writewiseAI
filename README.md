@@ -11,11 +11,10 @@
   <img src="https://img.shields.io/badge/-Tailwind_CSS-black?style=for-the-badge&logoColor=white&logo=tailwindcss&color=06B6D4" alt="tailwindcss" />
   <img src="https://img.shields.io/badge/-Framer%20Motion-black?style=for-the-badge&logo=framer&logoColor=white&color=0055FF" alt="Framer Motion" />
   <img src="https://img.shields.io/badge/-Firebase-black?style=for-the-badge&logo=firebase&logoColor=white&color=FFCA28" alt="Firebase" />
-<img src="https://img.shields.io/badge/-OpenRouter_API-black?style=for-the-badge&logo=web&logoColor=white&color=412991" alt="OpenRouter API" />
+<img src="https://img.shields.io/badge/-OpenRouter_API-black?style=for-the-badge&logo=cloudflare&logoColor=white&color=412991" alt="OpenRouter API" />
 
 
 </div>
-
 
 <h1 align="center">WriteWise AI</h3>
 </div>
@@ -39,7 +38,7 @@ WriteWise AI is an AI-powered writing assistant designed to help professionals c
 
 ## ✨ Features
 
-- **AI-Powered Text Generation (LLaMA via OpenRouter API)****: Generate high-quality, professional content using Meta’s LLaMA model accessed through the OpenRouter API — combining open-source language modeling with seamless API integration and flexibility.
+- **AI-Powered Text Generation (LLaMA via OpenRouter API)\*\***: Generate high-quality, professional content using Meta’s LLaMA model accessed through the OpenRouter API — combining open-source language modeling with seamless API integration and flexibility.
 - **Real-Time Streaming Output**: Watch your content appear word by word, enhancing interactivity.
 - **One-Click Copy**: Quickly copy the generated content for use anywhere.
 - **Auto-Save & Manage History**: Every generation is automatically saved to your personal history. Easily delete specific entries or clear your entire history with a single click.
