@@ -8,7 +8,14 @@ import Footer from "@/components/Footer";
 export const metadata: Metadata = {
   title: "WriteWise AI",
   description: "Your AI-powered writing assistant for crafting clear, professional, and impactful content effortlessly.",
-  keywords: ["AI writing assistant", "WriteWise", "content generation", "copywriting", "email writing", "productivity tool"],
+  keywords: [
+    "AI writing assistant",
+    "WriteWise",
+    "content generation",
+    "copywriting",
+    "email writing",
+    "productivity tool",
+  ],
   authors: [{ name: "WriteWise AI Team", url: "https://writewise-ai.vercel.app/" }],
   creator: "WriteWise AI",
   applicationName: "WriteWise AI",
@@ -20,14 +27,24 @@ export const metadata: Metadata = {
     siteName: "WriteWise AI",
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: "/favicon.ico", // Path relative to the public folder
+        width: 800,
+        height: 600,
+        alt: "WriteWise AI Logo",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "WriteWise AI",
     description: "Polish your writing with AI – clear, professional, and fast.",
     creator: "@daniyalkhandev",
+    images: ["/favicon.ico"], // Just the relative path works here
   },
 };
+
 
 
 export default function RootLayout({
