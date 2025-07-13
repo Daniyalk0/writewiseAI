@@ -124,6 +124,7 @@ const Page = () => {
               Email
             </Label>
             <Input
+            autoComplete="off"
               disabled={
                 isSubmitting ||
                 isThirdPartyAuthLoading ||
@@ -132,7 +133,6 @@ const Page = () => {
               }
               id="email"
               type="email"
-              autoComplete="email"
               //   required
               className={`dark:text-zinc-300 text-zinc-600  placeholder:dark:text-zinc-600 placeholder:text-zinc-400  mt-1 block w-full rounded-md  shadow-sm  disabled:opacitdy-60 disabled:cursor-not-allowed ${
                 errors.email && errors.email.message
