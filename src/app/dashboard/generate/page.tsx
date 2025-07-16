@@ -24,36 +24,42 @@ const contentTypes = [
 ];
 
 export default function GeneratePage() {
-  const [type, setType] = useState(contentTypes[0]);
   const [context, setContext] = useState("");
   const [output, setOutput] = useState("");
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState<number | null>(null);
   const [error, setError] = useState("");
   const [userGeneratedContext, setUserGeneratedContext] = useState("");
+  const [previousGeneratedContentType, setPreviousGeneratedContentType] =
+    useState("");
+
+  const [type, setType] = useState(contentTypes[0]);
+  const [isImproving, setIsImproving] = useState(false);
+  const [showImproveWarning, setShowImproveWarning] = useState(false);
 
   const currentUser = useAuth();
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [originalContentType, setOriginalContentType] = useState<string | null>(
+    null
+  );
 
   const copyButton = () => {
     handleCopy(output, setCopied, 1);
   };
 
+  const didMount = useRef(false);
 
-
-const didMount = useRef(false);
-
-useEffect(() => {
-  if (didMount.current) {
-    // Only scroll when loading changes AFTER first render
-    window.scrollTo({
-      top: document.body.scrollHeight,
-      behavior: "smooth",
-    });
-  } else {
-    didMount.current = true;
-  }
-}, [loading]);
+  useEffect(() => {
+    if (didMount.current) {
+      // Only scroll when loading changes AFTER first render
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth",
+      });
+    } else {
+      didMount.current = true;
+    }
+  }, [loading]);
 
 
   const handleGenerate = async () => {
@@ -63,17 +69,26 @@ useEffect(() => {
       );
       return;
     }
+    if (!originalContentType) {
+      setOriginalContentType(type);
+    }
 
     setOutput("");
     setUserGeneratedContext(context);
+    setPreviousGeneratedContentType((prev) => (isImproving ? prev : type));
     setContext("");
     setLoading(true);
 
     try {
       await generateText({
         prompt: context,
-        type,
+        type: type,
+        isImproving: isImproving,
         uid: currentUser.uid,
+        ...(isImproving && {
+          originalPrompt: userGeneratedContext,
+          previousResponse: output,
+        }),
         onToken: (chunk) => {
           setOutput((prev) => {
             const updated = prev + chunk;
@@ -85,9 +100,25 @@ useEffect(() => {
         },
       });
     } catch (err) {
-      console.error(err);
+      const errorMessage = err instanceof Error ? err.message : String(err);
+      console.error(errorMessage);
+      setError(errorMessage);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = e.target.checked;
+    setIsImproving(checked);
+
+    if (showImproveWarning && isImproving) {
+      setShowImproveWarning(false);
+    }
+
+    // Reset to original type if "Improve" is activated after type change
+    if (checked && originalContentType && type !== originalContentType) {
+      setType(originalContentType);
     }
   };
 
@@ -103,11 +134,23 @@ useEffect(() => {
             Content Type
           </label>
           <select
-            disabled={loading}
             value={type}
-            onChange={(e) => setType(e.target.value)}
-            className={`w-full border border-zinc-300 dark:border-gray-800  focus:outline-none focus:border-orange-400  focus:dark:border-orange-900 dark:bg-[#282828a7] bg-[#ececec] rounded-md p-2 placeholder:text-zinc-500 ${
-              loading && "text-zinc-400 dark:text-zinc-700"
+            onMouseDown={(e) => {
+              if (isImproving) {
+                e.preventDefault(); // ⛔ Prevent dropdown from opening
+                setShowImproveWarning(true);
+                setTimeout(() => setShowImproveWarning(false), 2500);
+              }
+            }}
+            onChange={(e) => {
+              if (!isImproving) {
+                setType(e.target.value);
+              }
+            }}
+            disabled={loading}
+            className={`w-full border border-zinc-300 dark:border-gray-800 focus:outline-none focus:border-orange-400 focus:dark:border-orange-900 dark:bg-[#282828a7] bg-[#ececec] rounded-md p-2 placeholder:text-zinc-500 ${
+              (isImproving || loading) &&
+              "text-zinc-400 dark:text-zinc-700 cursor-not-allowed"
             }`}
           >
             {contentTypes.map((ct) => (
@@ -135,17 +178,46 @@ useEffect(() => {
             placeholder="e.g., Write a follow-up email after a job interview..."
           />
         </div>
+        <div className={`flex items-center gap-2 mb-4`}>
+          <input
+            id="improve-mode"
+            type="checkbox"
+            checked={isImproving}
+            onChange={(e) => handleCheckbox(e)}
+            disabled={!output || context.length > 0}
+            className="w-4 h-4"
+          />
+          <label
+            htmlFor="improve-mode"
+            className="text-[0.9rem] sm:text-sm text-zinc-600 dark:text-zinc-400"
+          >
+            Improve previous result
+          </label>
+          {showImproveWarning && (
+            <>
+              {/* Show on <500px */}
+              <span className="text-[0.8rem] text-orange-500 animate-pulse ml-2 sm:hidden">
+                Uncheck first!
+              </span>
+
+              {/* Show on ≥500px (optional fallback) */}
+              <span className="hidden sm:inline text-xs text-orange-500 animate-pulse ml-2">
+                Uncheck to change content type
+              </span>
+            </>
+          )}
+        </div>
 
         <button
-          onClick={handleGenerate}
           disabled={loading}
+          onClick={handleGenerate}
           className={`w-full md:w-24 px-4 py-2 rounded-md flex items-center justify-center transition-colors duration-200 border-y-2 border-transparent active:border-red-500 ${
             loading
               ? "pointer-events-none text-zinc-400 dark:text-zinc-700 bg-zinc-300 dark:bg-zinc-800"
               : "text-red-600 bg-zinc-300 dark:bg-zinc-800"
           }`}
         >
-          Generate
+          {isImproving ? "Improve" : "Generate"}
         </button>
       </div>
 
@@ -183,7 +255,9 @@ useEffect(() => {
           <div className="max-w-[100%] md:max-w-[80%] bg-gray-200 dark:bg-[#222222] text-gray-900 dark:text-gray-200 p-4 rounded-xl rounded-bl-none shadow-md text-sm relative space-y-2">
             <div className="flex justify-between items-center">
               <h3 className="text-sm  text-zinc-400 dark:text-zinc-600">
-                {loading ? `Generating ${type}...` : `Generated ${type}`}
+                {loading
+                  ? `Generating ${previousGeneratedContentType}...`
+                  : `Generated ${previousGeneratedContentType}`}
               </h3>
 
               <button
@@ -220,9 +294,11 @@ useEffect(() => {
 
       {error && (
         <PopUp
-          title="Failed Generation"
+          title="Failed"
           message={error}
           onClose={() => setError("")}
+          onButton={() => setError("")}
+          ButtonText="Ok"
         />
       )}
     </div>

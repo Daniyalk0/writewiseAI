@@ -16,7 +16,7 @@ type Generation = {
   prompt: string;
   result: string;
   createdAt: Timestamp;
-  type: string
+  contentType: string
 };
 
 export function useHistory(currentUser: User | null | undefined ) {

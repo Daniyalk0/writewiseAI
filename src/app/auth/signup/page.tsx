@@ -297,11 +297,13 @@ useEffect(() => {
               </p>
 
               {message && (
-                <PopUp
-                  title="Submission failed"
-                  message={message}
-                  onClose={() => setMessage("")}
-                />
+               <PopUp
+                         title="Submission failed"
+                         message={message}
+                         onClose={() => setMessage("")}
+                         onButton={() => setMessage("")}
+                         ButtonText="ok"
+                       />
               )}
             </div>
           )}

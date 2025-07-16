@@ -292,6 +292,8 @@ const Page = () => {
             title="Submission failed"
             message={message}
             onClose={() => setMessage("")}
+            onButton={() => setMessage("")}
+            ButtonText="ok"
           />
         )}
       </div>

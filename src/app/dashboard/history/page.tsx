@@ -9,9 +9,11 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import { User } from "firebase/auth";
+import PopUp from "@/components/PopUp";
 
 export default function History() {
- const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const [confirmMsg, setConfirmMsg] = useState<string | null>(null);
 
   const currentUser: User | null | undefined = useAuth();
 
@@ -42,12 +44,11 @@ export default function History() {
   };
 
   async function handleClearAll() {
-    const ok = confirm("Are you sure you want to clear all history?");
-    if (ok) {
-      if (currentUser) {
-        await clearAllHistory(currentUser.uid);
-      }
-    }
+    // const ok = confirm();
+    setConfirmMsg("Are you sure you want to clear all history?");
+
+     
+  
   }
 
   return (
@@ -93,7 +94,7 @@ export default function History() {
               {/* Type + Timestamp */}
 
               <div className="text-[10px] text-gray-500 dark:text-gray-400 mb-1">
-                <span className="font-medium">{item.type}</span> •{" "}
+                <span className="font-medium">{item.contentType}</span> •{" "}
                 {item.createdAt?.seconds
                   ? new Date(item.createdAt.seconds * 1000).toLocaleTimeString()
                   : "Just now"}
@@ -133,6 +134,9 @@ export default function History() {
           </div>
         </div>
       ))}
+      {confirmMsg && <PopUp title="Confirmation" message={confirmMsg} onButton={async() => { if (currentUser) {
+        await clearAllHistory(currentUser.uid);
+      }}}  onClose={() => setConfirmMsg("")} ButtonText="Delete All"/>}
     </div>
   );
 }

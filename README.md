@@ -34,11 +34,11 @@ WriteWise AI is an AI-powered writing assistant designed to help professionals c
 - ✔️ Firebase
 - ✔️ TypeScript
 - ✔️ OpenAI API
-- ✔️ Framer Motion
 
 ## ✨ Features
 
 - **AI-Powered Text Generation (LLaMA via OpenRouter API)\*\***: Generate high-quality, professional content using Meta’s LLaMA model accessed through the OpenRouter API — combining open-source language modeling with seamless API integration and flexibility.
+- **Improve Previous Response:**: Instantly refine any generated content with a follow-up instruction — make it more formal, friendly, concise, persuasive, or anything you want — without retyping the original input.
 - **Real-Time Streaming Output**: Watch your content appear word by word, enhancing interactivity.
 - **One-Click Copy**: Quickly copy the generated content for use anywhere.
 - **Auto-Save & Manage History**: Every generation is automatically saved to your personal history. Easily delete specific entries or clear your entire history with a single click.
