@@ -29,7 +29,7 @@ export default function GeneratePage() {
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState<number | null>(null);
   const [error, setError] = useState("");
-  const [userGeneratedContext, setUserGeneratedContext] = useState("");
+  const [userGeneratedContext, setUserGeneratedContext] = useState("efefwe efewrewrw erewrwerw twerwe weqwewqe wewqeqw");
   const [previousGeneratedContentType, setPreviousGeneratedContentType] =
     useState("");
 
@@ -225,7 +225,7 @@ export default function GeneratePage() {
         <div className="mt-8 flex justify-end items-start gap-2">
           {/* Message Bubble */}
           <div
-            className="max-w-[100%] md:max-w-[70%] text-white p-4 rounded-xl rounded-br-none shadow-md text-sm "
+            className="max-w-[90%] md:max-w-[70%] text-white p-4 rounded-xl rounded-br-none shadow-md text-sm "
             style={{
               background:
                 "linear-gradient(90deg,rgba(255, 113, 25, 1) 1%, rgba(255, 0, 0, 1) 100%)",
