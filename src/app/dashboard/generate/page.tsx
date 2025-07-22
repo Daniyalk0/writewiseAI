@@ -29,7 +29,7 @@ export default function GeneratePage() {
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState<number | null>(null);
   const [error, setError] = useState("");
-  const [userGeneratedContext, setUserGeneratedContext] = useState("efefwe efewrewrw erewrwerw twerwe weqwewqe wewqeqw");
+  const [userGeneratedContext, setUserGeneratedContext] = useState("");
   const [previousGeneratedContentType, setPreviousGeneratedContentType] =
     useState("");
 
